@@ -136,3 +136,19 @@ function metrics_civicrm_preProcess($formName, &$form) {
 }
 
 */
+
+function metrics_metrics_collate(&$data) {
+
+  /********[ Relationships ] ********/
+  $sql = "SELECT COUNT(*) FROM civicrm_relationship";
+  $total =& CRM_Core_DAO::singleValueQuery($sql);
+  $data[] = array("type" => "relationships", "data" => $total);
+
+  /********[ Activities ] ********/
+  $sql = "SELECT COUNT(*) FROM civicrm_activity";
+  $total =& CRM_Core_DAO::singleValueQuery($sql);
+  $data[] = array("type" => "activities", "data" => $total);
+
+
+
+}
