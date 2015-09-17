@@ -235,6 +235,13 @@ WHERE civicrm_option_group.name = 'case_status'";
 
 
   /********[ Languages ] ********/
-  
+  $total = 1;
+  $domain = new CRM_Core_DAO_Domain();
+  $domain->find(TRUE);
+  if ($domain->locales) {
+    $total = substr_count($domain->locales, "_");
+  }
+
+  $data[] = array("type" => "languages", "data" => $total);
 
 }
