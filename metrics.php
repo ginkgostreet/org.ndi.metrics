@@ -172,10 +172,27 @@ function metrics_metrics_collate(&$data) {
 
 
   /********[ Mail ] ********/
+  $mail = array();
 
+  $sql = "SELECT COUNT(*) FROM civicrm_mailing_recipients";
+  $mail['total_messages'] =& CRM_Core_DAO::singleValueQuery($sql);
+
+  $sql = "SELECT COUNT(*) FROM (SELECT contact_id FROM civicrm_mailing_recipients GROUP BY contact_id)a";
+  $mail['unique_recipients'] =& CRM_Core_DAO::singleValueQuery($sql);
+
+  $sql = "SELECT COUNT(*) FROM civicrm_mailing_event_trackable_url_open";
+  $mail['click_throughs'] =& CRM_Core_DAO::singleValueQuery($sql);
+
+  $sql = "SELECT COUNT(*) FROM civicrm_mailing_event_opened";
+  $mail['opens'] =& CRM_Core_DAO::singleValueQuery($sql);
+
+  $sql = "SELECT COUNT(*) FROM civicrm_mailing_event_bounce";
+  $mail['bounces'] =& CRM_Core_DAO::singleValueQuery($sql);
+
+  $data[] = array("type" => "mailings", "data" => $mail);
 
   /********[ Registered Visits ] ********/
-
+  
 
   /********[ Events ] ********/
 
