@@ -192,10 +192,20 @@ function metrics_metrics_collate(&$data) {
   $data[] = array("type" => "mailings", "data" => $mail);
 
   /********[ Registered Visits ] ********/
-  
+
 
   /********[ Events ] ********/
+  $totals = array();
+  $sql = "SELECT COUNT(*) FROM civicrm_participant";
+  $totals["total_participants"] =& CRM_Core_DAO::singleValueQuery($sql);
 
+  $sql = "SELECT COUNT(*) FROM (SELECT contact_id FROM civicrm_participant GROUP BY contact_id)a";
+  $totals["unique_participants"] =& CRM_Core_DAO::singleValueQuery($sql);
+
+  $sql = "SELECT COUNT(*) FROM civicrm_event WHERE is_template = 0";
+  $totals["total"] =& CRM_Core_DAO::singleValueQuery($sql);
+
+  $data[] = array("type" => "events", "data" => $totals);
 
   /********[ Cases ] ********/
 
