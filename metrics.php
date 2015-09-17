@@ -150,5 +150,33 @@ function metrics_metrics_collate(&$data) {
   $data[] = array("type" => "activities", "data" => $total);
 
 
+  /********[ Tags ] ********/
+  $sql = "SELECT name,COUNT(*) as total FROM civicrm_entity_tag LEFT JOIN civicrm_tag on (civicrm_entity_tag.tag_id = civicrm_tag.id) WHERE civicrm_entity_tag.entity_table = 'civicrm_contact' GROUP BY tag_id";
+  $dao =& CRM_Core_DAO::executeQuery($sql);
+  $totals = array();
+  while($dao->fetch()) {
+    $totals[$dao->name] = $dao->total;
+  }
+  $data[] = array("type" => "tags", "data" => $totals);
+
+
+  /********[ Groups ] ********/
+
+
+
+  /********[ Mail ] ********/
+
+
+  /********[ Registered Visits ] ********/
+
+
+  /********[ Events ] ********/
+
+
+  /********[ Cases ] ********/
+
+
+  /********[ Languages ] ********/
+
 
 }
