@@ -191,7 +191,12 @@ function metrics_metrics_collate(&$data) {
 
   $data[] = array("type" => "mailings", "data" => $mail);
 
+
+
+
   /********[ Registered Visits ] ********/
+
+
 
 
   /********[ Events ] ********/
@@ -207,10 +212,29 @@ function metrics_metrics_collate(&$data) {
 
   $data[] = array("type" => "events", "data" => $totals);
 
+
   /********[ Cases ] ********/
+  $sql = "SELECT civicrm_option_value.name,civicrm_option_value.value
+FROM civicrm_option_value LEFT JOIN civicrm_option_group ON (option_group_id = civicrm_option_group.id)
+WHERE civicrm_option_group.name = 'case_status'";
+
+  $dao =& CRM_Core_DAO::executeQuery($sql);
+  $status = array();
+  while($dao->fetch()) {
+    $status[$dao->value] = $dao->name;
+  }
+
+  $sql = "SELECT status_id,COUNT(*) as total FROM civicrm_case WHERE is_deleted <> 1 GROUP BY status_id";
+  $dao =& CRM_Core_DAO::executeQuery($sql);
+  $totals = array();
+  while($dao->fetch()) {
+    $totals[ $status[ $dao->status_id ] ] = $dao->total;
+  }
+
+  $data[] = array("type" => "cases", "data" => $totals);
 
 
   /********[ Languages ] ********/
-
+  
 
 }
