@@ -161,7 +161,14 @@ function metrics_metrics_collate(&$data) {
 
 
   /********[ Groups ] ********/
+  $params = array();
+  $groups = CRM_Contact_BAO_Group::getGroupList($params);
+  $totals = array();
+  foreach($groups as $group) {
+    $totals[$group['title']] = $group['count'];
+  }
 
+  $data[] = array("type" => "groups", "data" => $totals);
 
 
   /********[ Mail ] ********/
